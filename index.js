@@ -12,6 +12,8 @@ const config = {
 // create Express app
 const app = express();
 
+app.use(express.json());
+
 // middleware (for verify)
 app.get('/', (req, res) => {
   res.send('OK');
