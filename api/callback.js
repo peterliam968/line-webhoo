@@ -33,7 +33,8 @@ export default async function handler(req, res) {
 
     const results = await Promise.all(
       events.map(async (event) => {
-        console.log('👉 event:', JSON.stringify(event, null, 2)); // <== 就是這行！
+        // 這裡！log 出 event 給你看！
+        console.log('👉 event:', JSON.stringify(event, null, 2));
 
         if (event.type !== 'message' || event.message.type !== 'text') {
           return Promise.resolve(null);
@@ -51,4 +52,3 @@ export default async function handler(req, res) {
     res.status(500).end();
   }
 }
-
