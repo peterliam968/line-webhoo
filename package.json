@@ -1,13 +1,13 @@
 {
   "name": "line-webhook",
   "version": "1.0.0",
-  "description": "LINE webhook bot",
+  "description": "LINE Webhook for Smart Predict X",
   "main": "index.js",
   "scripts": {
     "start": "node ."
   },
   "dependencies": {
     "@line/bot-sdk": "^7.5.1",
-    "express": "^4.18.2"
+    "express": "^4.17.3"
   }
 }
