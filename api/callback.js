@@ -1,5 +1,3 @@
-'use strict';
-
 import { middleware, Client } from '@line/bot-sdk';
 
 const lineConfig = {
@@ -35,6 +33,8 @@ export default async function handler(req, res) {
 
     const results = await Promise.all(
       events.map(async (event) => {
+        console.log('👉 event:', JSON.stringify(event, null, 2)); // <== 就是這行！
+
         if (event.type !== 'message' || event.message.type !== 'text') {
           return Promise.resolve(null);
         }
@@ -51,3 +51,4 @@ export default async function handler(req, res) {
     res.status(500).end();
   }
 }
+
