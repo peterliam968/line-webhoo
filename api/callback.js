@@ -1,5 +1,3 @@
-'use strict';
-
 import { middleware, Client } from '@line/bot-sdk';
 
 const config = {
@@ -9,7 +7,7 @@ const config = {
 
 const client = new Client(config);
 
-export const configApi = {
+export const config = {
   api: {
     bodyParser: false,
   },
