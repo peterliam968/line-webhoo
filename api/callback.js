@@ -1,6 +1,6 @@
 'use strict';
 
-const line = require('@line/bot-sdk');
+import { middleware, Client } from '@line/bot-sdk';
 
 // LINE config
 const config = {
@@ -8,16 +8,37 @@ const config = {
   channelSecret: process.env.CHANNEL_SECRET,
 };
 
-// Create LINE SDK client
-const client = new line.Client(config);
+// LINE Client
+const client = new Client(config);
 
+// 禁用 bodyParser，保留原始 body 給 middleware 用
+export const configApi = {
+  api: {
+    bodyParser: false,
+  },
+};
+
+// handler
 export default async function handler(req, res) {
-  // Only accept POST
   if (req.method !== 'POST') {
     return res.status(405).end();
   }
 
+  // middleware 處理
+  const runMiddleware = (req, res, fn) =>
+    new Promise((resolve, reject) => {
+      fn(req, res, (result) => {
+        if (result instanceof Error) {
+          return reject(result);
+        }
+        return resolve(result);
+      });
+    });
+
   try {
+    // Run LINE middleware，讓 req.body 變成可用的 LINE 事件
+    await runMiddleware(req, res, middleware(config));
+
     const events = req.body.events;
 
     const results = await Promise.all(
