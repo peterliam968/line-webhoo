@@ -1,11 +1,11 @@
 import { middleware, Client } from '@line/bot-sdk';
 
-const config = {
+const lineConfig = {
   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
   channelSecret: process.env.CHANNEL_SECRET,
 };
 
-const client = new Client(config);
+const client = new Client(lineConfig);
 
 export const config = {
   api: {
@@ -27,7 +27,7 @@ export default async function handler(req, res) {
     });
 
   try {
-    await runMiddleware(req, res, middleware(config));
+    await runMiddleware(req, res, middleware(lineConfig));
 
     const events = req.body.events;
 
