@@ -1,18 +1,16 @@
-'use strict';
+import { Client, middleware } from '@line/bot-sdk';
+export const config = { runtime: 'nodejs' };
 
-const line = require('@line/bot-sdk');
-
-// create LINE SDK config from env variables
-const config = {
+const configLine = {
   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
   channelSecret: process.env.CHANNEL_SECRET,
 };
 
-const client = new line.Client(config);
+const client = new Client(configLine);
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    res.status(405).end(); // Method Not Allowed
+    res.status(405).end();
     return;
   }
 
@@ -33,7 +31,7 @@ export default async function handler(req, res) {
 
     res.status(200).json(results);
   } catch (err) {
-    console.error(err);
+    console.error('Error:', err);
     res.status(500).end();
   }
 }
