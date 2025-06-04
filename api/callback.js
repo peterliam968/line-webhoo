@@ -1,16 +1,22 @@
-import { Client, middleware } from '@line/bot-sdk';
+'use strict';
+
+import { Client } from '@line/bot-sdk';
+
 export const config = { runtime: 'nodejs' };
 
+// LINE Bot config
 const configLine = {
   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
   channelSecret: process.env.CHANNEL_SECRET,
 };
 
+// Create LINE client
 const client = new Client(configLine);
 
+// API Route
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    res.status(405).end();
+    res.status(405).end(); // Method Not Allowed
     return;
   }
 
