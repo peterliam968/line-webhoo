@@ -15,11 +15,12 @@ const client = new line.Client(config);
 // create Express app
 const app = express();
 
-// ⭐⭐⭐ 加這行 ⭐⭐⭐
+// ⭐ 加這行 ⭐
 app.use(express.json());
 
 // register a webhook handler with middleware
-app.post('/callback', line.middleware(config), (req, res) => {
+// 改成 /api/callback
+app.post('/api/callback', line.middleware(config), (req, res) => {
   Promise
     .all(req.body.events.map(handleEvent))
     .then((result) => res.json(result))
@@ -48,4 +49,3 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`listening on ${port}`);
 });
-
