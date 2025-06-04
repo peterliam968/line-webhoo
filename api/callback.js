@@ -1,3 +1,5 @@
+'use strict';
+
 import { middleware, Client } from '@line/bot-sdk';
 
 const lineConfig = {
@@ -45,7 +47,7 @@ export default async function handler(req, res) {
 
     res.status(200).json(results);
   } catch (err) {
-    console.error('LINE Webhook Error:', err);
+    console.error(err);
     res.status(500).end();
   }
 }
