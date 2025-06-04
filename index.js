@@ -5,28 +5,21 @@ const express = require('express');
 
 // create LINE SDK config from env variables
 const config = {
+  channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
   channelSecret: process.env.CHANNEL_SECRET,
 };
 
-// create LINE SDK client
-const client = new line.messagingApi.MessagingApiClient({
-  channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
-});
-
 // create Express app
-// about Express itself: https://expressjs.com/
 const app = express();
 
-// 🔥 新增這段，讓 LINE Verify 成功
+// middleware (for verify)
 app.get('/', (req, res) => {
   res.send('OK');
 });
 
-// register a webhook handler with middleware
-// about the middleware, please refer to doc
+// webhook
 app.post('/callback', line.middleware(config), (req, res) => {
-  Promise
-    .all(req.body.events.map(handleEvent))
+  Promise.all(req.body.events.map(handleEvent))
     .then((result) => res.json(result))
     .catch((err) => {
       console.error(err);
@@ -37,22 +30,18 @@ app.post('/callback', line.middleware(config), (req, res) => {
 // event handler
 function handleEvent(event) {
   if (event.type !== 'message' || event.message.type !== 'text') {
-    // ignore non-text-message event
     return Promise.resolve(null);
   }
 
-  // create an echoing text message
   const echo = { type: 'text', text: event.message.text };
 
-  // use reply API
-  return client.replyMessage({
-    replyToken: event.replyToken,
-    messages: [echo],
-  });
+  const client = new line.Client(config);
+  return client.replyMessage(event.replyToken, [echo]);
 }
 
-// listen on port
+// listen
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`listening on ${port}`);
 });
+
