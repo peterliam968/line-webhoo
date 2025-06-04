@@ -17,6 +17,11 @@ const client = new line.messagingApi.MessagingApiClient({
 // about Express itself: https://expressjs.com/
 const app = express();
 
+// 🔥 新增這段，讓 LINE Verify 成功
+app.get('/', (req, res) => {
+  res.send('OK');
+});
+
 // register a webhook handler with middleware
 // about the middleware, please refer to doc
 app.post('/callback', line.middleware(config), (req, res) => {
